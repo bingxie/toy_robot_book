@@ -16,3 +16,13 @@ Style/Documentation:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: true
+  Max: 120

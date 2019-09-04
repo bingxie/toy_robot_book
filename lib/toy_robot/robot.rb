@@ -2,7 +2,7 @@
 
 module ToyRobot
   class Robot
-    DIRECTIONS = ['NORTH', 'EAST', 'SOUTH', 'WEST']
+    DIRECTIONS = %w[NORTH EAST SOUTH WEST].freeze
 
     attr_accessor :east, :north, :direction
     def initialize(east = 0, north = 0, direction = 'NORTH')
