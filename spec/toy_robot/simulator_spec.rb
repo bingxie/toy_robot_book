@@ -18,9 +18,36 @@ RSpec.describe ToyRobot::Simulator do
     expect(subject.robot).to be_nil
   end
 
+  it 'does not have the robot placed by default' do
+    expect(subject.robot_placed?).to eq(false)
+  end
+
+  it 'does not move the robot' do
+    expect { subject.move }.to_not raise_error
+  end
+
+  it 'turning an unplaced robot left does not cause an exception' do
+    expect { subject.turn_left }.to_not raise_error
+  end
+
+  it 'turning an unplaced robot right does not cause an exception' do
+    expect { subject.turn_right }.to_not raise_error
+  end
+
+  it 'asking an unplaced robot to report does not cause an exception' do
+    expect { subject.report }.to_not raise_error
+  end
+
   context 'when robot has been placed' do
     let(:robot) { instance_double(ToyRobot::Robot, next_move: [0, 0]) }
-    before { allow(subject).to receive(:robot).and_return(robot) }
+    before do
+      subject.place(0, 0, 'NORTH')
+      allow(subject).to receive(:robot).and_return(robot)
+    end
+
+    it 'has a placed robot' do
+      expect(subject.robot_placed?).to eq(true)
+    end
 
     it 'tells the robot to move' do
       expect(robot).to receive(:move)
@@ -56,5 +83,11 @@ RSpec.describe ToyRobot::Simulator do
 
       expect { subject.report }.to output(message).to_stdout
     end
+  end
+
+  it 'informs us when a command is invalid' do
+    message = "'PLACE 1, 2, NORTH' is an invalid command\n"
+
+    expect { subject.invalid('PLACE 1, 2, NORTH') }.to output(message).to_stdout
   end
 end
